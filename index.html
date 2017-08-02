@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Hackathon</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/materialize.css">
+    <link rel="stylesheet" href="css/main.css">
+
+    <!-- FONTS -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- JS -->
+    <script src="js/babylon.custom.js"></script>
+    <script src="js/jquery.js"></script>
+    <script src="js/materialize.js"></script>
+
+  </head>
+  <body>
+    <canvas id="renderCanvas"></canvas>
+
+
+
+    <ul id="slide-out" class="side-nav">
+      <li>
+        <!-- <span>VELADERO</span> -->
+      </li>
+      <li><a href="#!"><i class="material-icons">filter_frames</i>Datos</a></li>
+      <li><a href="#!"><i class="material-icons">timeline</i>Reportes</a></li>
+      <li><a href="#!"><i class="material-icons">build</i>Acciones</a></li>
+
+      <li><div class="divider"></div></li>
+
+    </ul>
+    <a href="#" data-activates="slide-out" class="button-collapse btn-menu"><i class="material-icons" style="z-index=300">menu</i></a>
+
+
+    <script>
+        // Initialize collapse button
+        $(".button-collapse").sideNav();
+        // Initialize collapsible (uncomment the line below if you use the dropdown variation)
+        $('.collapsible').collapsible();
+    </script>
+
+    <script>
+    window.addEventListener('DOMContentLoaded', function() {
+          // your code here
+          var canvas = document.getElementById('renderCanvas');
+          var engine = new BABYLON.Engine(canvas, true);
+
+          var createScene = function() {
+          // create a basic BJS Scene object
+          var scene = new BABYLON.Scene(engine);
+
+          // create a FreeCamera, and set its position to (x:0, y:5, z:-10)
+          var camera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(0, 5,-10), scene);
+
+          // target the camera to scene origin
+          camera.setTarget(BABYLON.Vector3.Zero());
+
+          // attach the camera to the canvas
+          camera.attachControl(canvas, false);
+
+          // create a basic light, aiming 0,1,0 - meaning, to the sky
+          var light = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(0,1,0), scene);
+
+          // create a built-in "sphere" shape; its constructor takes 4 params: name, subdivisions, radius, scene
+          var sphere = BABYLON.Mesh.CreateSphere('sphere1', 16, 2, scene);
+
+          // move the sphere upward 1/2 of its height
+          sphere.position.y = 1;
+
+          // create a built-in "ground" shape; its constructor takes 5 params: name, width, height, subdivisions and scene
+          var ground = BABYLON.Mesh.CreateGround('ground1', 6, 6, 2, scene);
+
+          // return the created scene
+          return scene;
+        }
+        var scene = createScene();
+
+        engine.runRenderLoop(function() {
+          scene.render();
+        });
+
+        window.addEventListener('resize', function() {
+            engine.resize();
+        });
+
+    });
+    </script>
+</body>
+</html>
